@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes">
+  <title>Register - Chickenoy | Sign Up for Fried Chicken Delivery</title>
+  <meta name="description" content="Create your Chickenoy account to start ordering delicious crispy fried chicken online.">
+  <meta name="theme-color" content="#e63946">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="navbar-logo"><img src="../images/logo.png" alt="Chickenoy" onerror="this.style.display='none'; this.nextSibling.style.display='inline'"><span style="display:none">🍗 Chickenoy</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="cart.html">Cart</a>
+      <a href="dashboard.html">Orders</a>
+    </div>
+    <div class="auth-buttons">
+      <a href="login.html" class="login-btn">Login</a>
+      <a href="register.html" class="signin-btn">Sign In</a>
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  </nav>
+
+  <main class="form-page">
+    <h2>Create Account</h2>
+    <form id="registerForm">
+      <input id="nameInput" name="name" placeholder="Full Name" required>
+      <input id="emailInput" name="email" type="email" placeholder="Email Address" required>
+      <input id="passwordInput" name="password" type="password" placeholder="Password" required>
+      <input id="phoneInput" name="phone" placeholder="Phone Number (optional)">
+      <button id="registerBtn" type="submit">Register</button>
+    </form>
+    <p class="login-link">Already have an account? <a href="login.html">Login here</a></p>
+  </main>
+
+  <script>
+  function toggleMenu() {
+    const navLinks = document.getElementById('navLinks');
+    const authButtons = document.querySelector('.auth-buttons');
+    
+    navLinks.classList.toggle('active');
+    if (authButtons) authButtons.classList.toggle('active');
+    
+    // Close menu when clicking a link
+    const links = navLinks.querySelectorAll('a');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        if (authButtons) authButtons.classList.remove('active');
+      });
+    });
+  }
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    const nav = document.querySelector('nav');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (nav && !nav.contains(e.target) && navLinks.classList.contains('active')) {
+      navLinks.classList.remove('active');
+      const authButtons = document.querySelector('.auth-buttons');
+      if (authButtons) authButtons.classList.remove('active');
+    }
+  });
+
+  // Close menu on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const navLinks = document.getElementById('navLinks');
+      const authButtons = document.querySelector('.auth-buttons');
+      navLinks.classList.remove('active');
+      if (authButtons) authButtons.classList.remove('active');
+    }
+  });
+
+  function checkLogin() {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginBtn = document.querySelector('.login-btn');
+    
+    if (token && user.name) {
+      logoutBtn.style.display = 'block';
+      loginBtn.style.display = 'none';
+    } else {
+      logoutBtn.style.display = 'none';
+      loginBtn.style.display = 'block';
+    }
+  }
+
+  document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    if (confirm('Are you sure you want to logout?')) {
+      localStorage.clear();
+      alert('Logged out successfully');
+      window.location.href = 'index.html';
+    }
+  });
+
+  document.getElementById('registerForm')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('registerBtn');
+    const name = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('passwordInput').value;
+    const phone = document.getElementById('phoneInput').value.trim();
+
+    // Basic validation
+    if (!name || !email || !password) {
+      alert('Please fill in all required fields (Name, Email, Password)');
+      return;
+    }
+
+    // Prevent double submission
+    if (btn.disabled) return;
+
+    const originalText = btn.textContent;
+    btn.textContent = '✓ Success!';
+    btn.style.backgroundColor = '#27ae60';
+    btn.disabled = true;
+
+    // Set a timeout to prevent the button from getting stuck
+    const timeoutId = setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.backgroundColor = '';
+      btn.disabled = false;
+      alert('Registration took too long. Please try again.');
+    }, 15000); // 15 second timeout
+
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 12000); // 12 second fetch timeout
+
+      const { response: res, data: json } = await window.ChickenoyApi.request('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, phone }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeout);
+
+      if (!res.ok) {
+        clearTimeout(timeoutId);
+        btn.textContent = originalText;
+        btn.style.backgroundColor = '';
+        btn.disabled = false;
+        alert(json.error || json.message || 'Registration failed');
+        return;
+      }
+
+      // Registration successful - store data immediately
+      localStorage.setItem('token', json.token || '');
+      localStorage.setItem('user', JSON.stringify({ 
+        id: json.id,
+        name: json.name, 
+        email: json.email, 
+        phone: json.phone || ""
+      }));
+
+      // Clear timeout and redirect
+      clearTimeout(timeoutId);
+      
+      // Redirect after brief success display
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 500);
+
+    } catch (error) {
+      clearTimeout(timeoutId);
+      btn.textContent = originalText;
+      btn.style.backgroundColor = '';
+      btn.disabled = false;
+      
+      if (error.name === 'AbortError') {
+        alert('Connection timeout. Please check your internet and try again.');
+      } else {
+        alert('Registration error: ' + error.message);
+      }
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    checkLogin();
+    
+    // Cache buster - clear old cache on page load
+    if ('caches' in window) {
+      caches.keys().then(cacheNames => {
+        cacheNames.forEach(cacheName => {
+          caches.delete(cacheName);
+        });
+      });
+    }
+  });
+  </script>
+  <footer></footer>
+  <script src="../JS/common.js?v=2"></script>
+  <!-- PWA and Service Worker Setup -->
+  <script src="../JS/pwa-setup.js"></script>
+  <!-- Offline Error Handler -->
+  <script src="../JS/offline-handler.js?v=2"></script>
+</body>
+</html>

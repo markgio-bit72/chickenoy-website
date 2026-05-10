@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes">
+  <title>Admin - Chickenoy</title>
+  <meta name="description" content="Chickenoy admin dashboard for orders, customers, inventory, and reviews.">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="stylesheet" href="../CSS/style.css">
+  <style>
+    .admin-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: clamp(18px, 4vw, 36px);
+      background: #2d2415 !important;
+    }
+
+    .admin-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .admin-title h1 {
+      color: #ffbe0b;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      margin: 0;
+    }
+
+    .admin-title-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .admin-bell {
+      position: relative;
+      min-width: 48px;
+      width: 48px;
+      border-radius: 50% !important;
+      font-size: 1.2rem;
+    }
+
+    .admin-bell-count {
+      display: none;
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 22px;
+      height: 22px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #e63946;
+      color: #ffffff;
+      font-size: 0.78rem;
+      border: 2px solid #ffffff;
+      animation: pulseDot 1.5s infinite;
+    }
+
+    .admin-bell-count.active {
+      display: inline-flex;
+    }
+
+    .admin-login {
+      max-width: 420px;
+      margin: 40px auto;
+      display: grid;
+      gap: 12px;
+      background: #1a1a1a !important;
+      border: 2px solid #ffbe0b;
+      border-radius: 10px;
+      padding: 22px;
+    }
+
+    .admin-login input,
+    .admin-actions select,
+    .admin-card input {
+      min-height: 44px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 190, 11, 0.35);
+      background: #101010;
+      color: #ffffff;
+      padding: 10px;
+    }
+
+    .admin-login button,
+    .admin-card button,
+    .admin-message-card button,
+    .admin-actions button,
+    .admin-title button {
+      min-height: 44px;
+      border: 0;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ffbe0b, #f2a600);
+      color: #000000;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 10px 14px;
+    }
+
+    .admin-message {
+      color: #ffffff;
+      margin: 10px 0;
+    }
+
+    .admin-message.error {
+      color: #ff6b6b;
+    }
+
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .admin-stats div,
+    .admin-card,
+    .admin-order,
+    .admin-user,
+    .admin-message-card {
+      background: #1a1a1a !important;
+      border: 1px solid rgba(255, 190, 11, 0.25);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .admin-stats strong {
+      display: block;
+      color: #ffbe0b;
+      font-size: 1.5rem;
+    }
+
+    .admin-section {
+      margin-top: 28px;
+    }
+
+    .admin-section h2 {
+      color: #ffbe0b;
+      margin-bottom: 12px;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .admin-card {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 12px;
+    }
+
+    .admin-card img {
+      width: 86px;
+      height: 86px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .admin-card h3,
+    .admin-order strong,
+    .admin-user strong {
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .admin-card p,
+    .admin-order p,
+    .admin-user span,
+    .admin-message-card p,
+    .admin-message-card span {
+      color: #cccccc;
+      margin: 5px 0;
+    }
+
+    .admin-message-card.unread {
+      border-color: #e63946;
+      box-shadow: 0 0 0 1px rgba(230, 57, 70, 0.45);
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      margin: 8px 0;
+    }
+
+    .admin-order-head,
+    .admin-actions,
+    .admin-user {
+      display: grid;
+      gap: 8px;
+    }
+
+    .admin-order-head {
+      grid-template-columns: 1fr auto;
+      color: #cccccc;
+    }
+
+    .admin-actions {
+      grid-template-columns: 1fr 1fr auto;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 720px) {
+      .admin-stats,
+      .admin-actions,
+      .admin-order-head {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-card {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-card img {
+        width: 100%;
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="navbar-logo"><img src="../images/logo.png" alt="Chickenoy"><span style="display:none">Chickenoy</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="cart.html">Cart</a>
+      <a href="dashboard.html">Orders</a>
+      <a href="admin.html" class="active">Admin</a>
+    </div>
+    <div class="auth-buttons">
+      <a href="login.html" class="login-btn">Login</a>
+      <a href="register.html" class="signin-btn">Sign In</a>
+    </div>
+    <span class="menu-toggle" id="menuToggle">☰</span>
+  </nav>
+
+  <main>
+    <section class="admin-shell">
+      <div class="admin-title">
+        <h1>Chickenoy Admin</h1>
+        <div class="admin-title-actions">
+          <button type="button" class="admin-bell" onclick="document.getElementById('adminMessagesSection')?.scrollIntoView({behavior:'smooth'});">
+            &#128276;<span id="adminBellCount" class="admin-bell-count">0</span>
+          </button>
+          <button type="button" onclick="adminLogout()">Logout Admin</button>
+        </div>
+      </div>
+
+      <p id="adminMessage" class="admin-message">Use username ChickeNoy and password 12345.</p>
+
+      <form id="adminLogin" class="admin-login">
+        <input name="username" value="ChickeNoy" placeholder="Username" required>
+        <input name="password" value="12345" type="password" placeholder="Password" required>
+        <button type="submit">Login Admin</button>
+      </form>
+
+      <div id="adminApp" style="display:none;">
+        <div id="adminStats" class="admin-stats"></div>
+
+        <section class="admin-section">
+          <h2>Restock Menu</h2>
+          <div id="adminMenu" class="admin-grid"></div>
+        </section>
+
+        <section class="admin-section">
+          <h2>Customer Orders and Reviews</h2>
+          <div id="adminOrders" class="admin-grid"></div>
+        </section>
+
+        <section class="admin-section" id="adminMessagesSection">
+          <h2>Customer Messages</h2>
+          <div id="adminMessages" class="admin-grid"></div>
+        </section>
+
+        <section class="admin-section">
+          <h2>Customers</h2>
+          <div id="adminUsers" class="admin-grid"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer></footer>
+
+  <script>
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      const authButtons = document.querySelector('.auth-buttons');
+      navLinks.classList.toggle('active');
+      if (authButtons) authButtons.classList.toggle('active');
+    }
+
+    document.getElementById('menuToggle')?.addEventListener('click', toggleMenu);
+  </script>
+  <script src="../JS/admin.js"></script>
+  <script src="../JS/common.js?v=2"></script>
+  <script src="../JS/pwa-setup.js"></script>
+</body>
+</html>

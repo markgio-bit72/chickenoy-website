@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Allow: /Page/
+Allow: /CSS/
+Allow: /JS/
+Allow: /images/
+
+# Disallow admin and sensitive areas
+Disallow: /Backend/
+Disallow: /node_modules/
+Disallow: /.env
+Disallow: /*.env
+
+# Sitemaps
+Sitemap: https://chickenoy.local/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1

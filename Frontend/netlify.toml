@@ -1,0 +1,18 @@
+[build]
+  publish = "Frontend"
+  command = ""
+
+[[redirects]]
+  from = "/*"
+  to = "/Page/index.html"
+  status = 200
+
+[headers]
+  [[headers.for="/service-worker.js"]]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+  [[headers.for="/JS/*"]]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+  [[headers.for="/CSS/*"]]
+    Cache-Control = "public, max-age=0, must-revalidate"
