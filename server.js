@@ -60,7 +60,7 @@ app.use(express.json())
 // JS/CSS files are immediately fetched by browsers. In production this can
 // be changed back to a longer maxAge.
 const staticOptions = (process.env.NODE_ENV === 'development') ? { maxAge: 0, etag: false } : { maxAge: '1d', etag: false };
-app.use(express.static(path.join(__dirname, './Frontend'), staticOptions));
+app.use(express.static(path.join(__dirname, '.'), staticOptions));
 
 const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/Chickenoy";
 
@@ -79,56 +79,56 @@ app.use("/api", (req, res) => {
 })
 
 app.get(["/", "/index.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/index.html'))
+    res.sendFile(path.join(__dirname, './Page/index.html'))
 })
 
 app.get('/menu.html', (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/menu.html'))
+    res.sendFile(path.join(__dirname, './Page/menu.html'))
 })
 
 app.get('/login.html', (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/login.html'))
+    res.sendFile(path.join(__dirname, './Page/login.html'))
 })
 
 app.get(['/register', '/register.html'], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/register.html'))
+    res.sendFile(path.join(__dirname, './Page/register.html'))
 })
 
 app.get(['/login', '/login.html'], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/login.html'))
+    res.sendFile(path.join(__dirname, './Page/login.html'))
 })
 
 app.get(['/menu', '/menu.html'], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/menu.html'))
+    res.sendFile(path.join(__dirname, './Page/menu.html'))
 })
 
 app.get(['/dashboard', '/dashboard.html'], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/dashboard.html'))
+    res.sendFile(path.join(__dirname, './Page/dashboard.html'))
 })
 
 app.get(['/admin', '/admin.html'], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/admin.html'))
+    res.sendFile(path.join(__dirname, './Page/admin.html'))
 })
 
 app.get(['/contact', '/contact.html'], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/contact.html'))
+    res.sendFile(path.join(__dirname, './Page/contact.html'))
 })
 
 app.get(['/cart', '/cart.html'], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/cart.html'))
+    res.sendFile(path.join(__dirname, './Page/cart.html'))
 })
 
 app.get(['/checkout', '/checkout.html'], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/checkout.html'))
+    res.sendFile(path.join(__dirname, './Page/checkout.html'))
 })
 
 app.get(['/gcash-payment', '/gcash-payment.html'], (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/gcash-payment.html'))
+    res.sendFile(path.join(__dirname, './Page/gcash-payment.html'))
 })
 
 // Fallback to index.html for any other routes (SPA support)
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './Frontend/Page/index.html'))
+    res.sendFile(path.join(__dirname, './Page/index.html'))
 })
 
 const PORT = Number(process.env.PORT) || 5000;
