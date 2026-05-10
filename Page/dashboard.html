@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes">
+    <title>Dashboard - Chickenoy | Manage Your Orders</title>
+    <meta name="description" content="Manage your Chickenoy account, view order history, and track deliveries.">
+    <meta name="theme-color" content="#e63946">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="manifest" href="../manifest.json">
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+    <link rel="stylesheet" href="../CSS/style.css">
+    <style>
+        /* DASHBOARD STYLES */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(20px, 3vw, 40px);
+            background-color: #2d2415 !important;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: clamp(30px, 5vw, 50px);
+        }
+
+        .dashboard-header h2 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            color: var(--brand);
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .dashboard-header p {
+            color: var(--muted);
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: clamp(15px, 3vw, 25px);
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: #2d2415 !important;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid #ffbe0b;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--brand);
+            margin: 10px 0;
+        }
+
+        .stat-card-label {
+            color: var(--muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .orders-section {
+            background: #2d2415 !important;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .orders-header {
+            background: linear-gradient(135deg, rgba(255, 190, 11, 0.08), rgba(255, 190, 11, 0.05));
+            padding: 20px;
+            border-bottom: 2px solid rgba(255, 190, 11, 0.2);
+        }
+
+        .orders-header h3 {
+            margin: 0;
+            color: var(--brand);
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-weight: 800;
+        }
+
+        .orders-list {
+            padding: 20px;
+        }
+
+        .order-item {
+            padding: clamp(16px, 3vw, 20px);
+            border: 1px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .order-item:hover {
+            border-color: var(--brand);
+            background: rgba(230, 57, 70, 0.05);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .order-id {
+            font-weight: 800;
+            color: var(--brand);
+            font-size: 1.1rem;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-pending {
+            background: rgba(255, 190, 11, 0.2);
+            color: #ff6f00;
+        }
+
+        .status-confirmed {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+        }
+
+        .status-delivered {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+        }
+
+        .status-shipped {
+            background: rgba(33, 150, 243, 0.18);
+            color: #64b5f6;
+        }
+
+        .status-flow {
+            display: grid;
+            grid-template-columns: repeat(8, minmax(74px, 1fr));
+            gap: 6px;
+            margin: 14px 0;
+        }
+
+        .status-flow span {
+            border: 1px solid rgba(255, 190, 11, 0.25);
+            border-radius: 8px;
+            padding: 8px 6px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .status-flow span.active {
+            background: rgba(255, 190, 11, 0.18);
+            color: #ffffff;
+            border-color: #ffbe0b;
+        }
+
+        .order-actions {
+            margin-top: 14px;
+        }
+
+        .btn-inline,
+        .review-form button {
+            background: linear-gradient(135deg, #ffbe0b, #f2a600);
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .review-form {
+            display: grid;
+            grid-template-columns: 140px 1fr auto;
+            gap: 10px;
+        }
+
+        .review-form select,
+        .review-form input {
+            min-height: 44px;
+            border: 1px solid rgba(255, 190, 11, 0.3);
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        .review-note {
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .order-details {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .order-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .order-detail-label {
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .order-detail-value {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .order-items {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .order-items-title {
+            font-weight: 700;
+            color: var(--brand);
+            margin-bottom: 8px;
+        }
+
+        .order-item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .order-item-list li {
+            padding: 4px 0;
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+        }
+
+        .order-total {
+            margin: 12px 0;
+            padding-top: 12px;
+            border-top: 2px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--brand);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: var(--muted);
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .empty-state a {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), #f2a600);
+            color: var(--text);
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .empty-state a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 190, 11, 0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 768px) {
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .order-detail-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-flow,
+            .review-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="navbar-logo"><img src="../images/logo.png" alt="Chickenoy" onerror="this.style.display='none'; this.nextSibling.style.display='inline'"><span style="display:none">🍗 Chickenoy</span></a>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="cart.html">Cart</a>
+            <a href="dashboard.html" class="active">Orders</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="login-btn" id="loginBtn" onclick="window.location='login.html'">Login</button>
+            <button class="signin-btn" id="signinBtn" onclick="window.location='register.html'">Sign In</button>
+            <button class="logout-btn" id="logoutBtn" onclick="logout()">Logout</button>
+        </div>
+        <span class="menu-toggle" id="menuToggle">☰</span>
+    </nav>
+
+    <main>
+        <div class="dashboard-container">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <h2>📊 Order Dashboard</h2>
+                <p>Track and manage all your orders</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-card-label">Total Orders</div>
+                    <div class="stat-card-value" id="totalOrders">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Pending Orders</div>
+                    <div class="stat-card-value" id="pendingOrders">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Total Spent</div>
+                    <div class="stat-card-value" id="totalSpent">₱0</div>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div class="orders-section">
+                <div class="orders-header">
+                    <h3>📦 Your Orders</h3>
+                </div>
+                <div class="orders-list" id="ordersList">
+                    <div class="loading">Loading your orders...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Chickenoy. All rights reserved. 🍗</p>
+    </footer>
+
+    <script>
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      const authButtons = document.querySelector('.auth-buttons');
+      
+      navLinks.classList.toggle('active');
+      if (authButtons) authButtons.classList.toggle('active');
+      
+      // Close menu when clicking a link
+      const links = navLinks.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+          if (authButtons) authButtons.classList.remove('active');
+        });
+      });
+    }
+
+    // Add click event listener to menu toggle
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuToggle = document.getElementById('menuToggle');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', toggleMenu);
+      }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const nav = document.querySelector('nav');
+      const navLinks = document.getElementById('navLinks');
+      
+      if (nav && !nav.contains(e.target) && navLinks.classList.contains('active')) {
+        navLinks.classList.remove('active');
+        const authButtons = document.querySelector('.auth-buttons');
+        if (authButtons) authButtons.classList.remove('active');
+      }
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const navLinks = document.getElementById('navLinks');
+        const authButtons = document.querySelector('.auth-buttons');
+        navLinks.classList.remove('active');
+        if (authButtons) authButtons.classList.remove('active');
+      }
+    });
+
+    // Set active link based on current page
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.nav-links a');
+      navLinks.forEach(link => {
+        if (link.getAttribute('href').includes('dashboard.html')) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    });
+    </script>
+    <script src="../JS/dashboard.js"></script>
+    <script src="../JS/common.js?v=2"></script>
+    <!-- PWA and Service Worker Setup -->
+    <script src="../JS/pwa-setup.js"></script>
+    <!-- Offline Error Handler -->
+    <script src="../JS/offline-handler.js?v=2"></script>
+</body>
+</html>

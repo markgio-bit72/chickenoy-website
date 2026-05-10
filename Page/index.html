@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Chickenoy - Delicious Crispy Fried Chicken</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes">
+  <meta name="theme-color" content="#e63946">
+  <meta name="description" content="Order delicious crispy fried chicken online. Hot, Fresh, Delivered Fast. Visit Chickenoy for premium fried chicken delivery.">
+  <meta name="keywords" content="fried chicken, order online, chicken delivery, crispy chicken, food delivery">
+  <meta name="author" content="Chickenoy">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Chickenoy">
+  
+  <!-- Open Graph Meta Tags for Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Chickenoy - Delicious Crispy Fried Chicken">
+  <meta property="og:description" content="Order delicious crispy fried chicken online. Hot, Fresh, Delivered Fast.">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="../images/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Chickenoy">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Chickenoy - Delicious Crispy Fried Chicken">
+  <meta name="twitter:description" content="Order delicious crispy fried chicken online. Hot, Fresh, Delivered Fast.">
+  <meta name="twitter:image" content="../images/og-image.png">
+  
+  <!-- Additional Mobile Meta Tags -->
+  <meta name="format-detection" content="telephone=no">
+  <meta name="format-detection" content="email=no">
+  <meta name="color-scheme" content="light">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="../manifest.json">
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="../images/favicon.png" type="image/png">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="navbar-logo"><img src="../images/logo.png" alt="Chickenoy" onerror="this.style.display='none'; this.nextSibling.style.display='inline'"><span style="display:none">🍗 Chickenoy</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="active">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="cart.html">Cart</a>
+      <a href="dashboard.html">Dashboard</a>
+    </div>
+    <div class="auth-buttons">
+      <a href="login.html" class="login-btn">Login</a>
+      <a href="register.html" class="signin-btn">Sign In</a>
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Chickenoy!</h1>
+      <h2>Delicious Crispy Fried Chicken</h2>
+      <p class="hero-tagline">Hot. Fresh. Delivered Fast.</p>
+      <p class="hero-subtitle">Craving something crispy and satisfying? We've got you covered.</p>
+      <a href="menu.html" class="btn-order-now">ORDER NOW</a>
+    </div>
+  </header>
+
+  <section class="features">
+    <div class="card">
+      <h3>🔥 Fresh Chicken</h3>
+      <p>Made daily with premium ingredients.</p>
+    </div>
+
+    <div class="card">
+      <h3>🚚 Fast Delivery</h3>
+      <p>Hot meals delivered quickly.</p>
+    </div>
+
+    <div class="card">
+      <h3>⭐ Best Taste</h3>
+      <p>Crispy and juicy fried chicken.</p>
+    </div>
+  </section>
+
+  <!-- Promotional Section with Scrolling Images -->
+  <section class="promo-section">
+    <div class="promo-carousel">
+      <div class="carousel-track">
+        <img src="../images/menu-item-1.png" alt="Crispy Chicken Bundle ₱500" class="carousel-image">
+        <img src="../images/menu-item-2.png" alt="Chicken & Fries Combo ₱320" class="carousel-image">
+        <img src="../images/menu-item-3.png" alt="Ultimate Chicken Feast ₱1000" class="carousel-image">
+        <img src="../images/menu-item-4.png" alt="Classic Fried Chicken Leg ₱25" class="carousel-image">
+        <img src="../images/menu-item-5.png" alt="Signature Chicken Bucket ₱500" class="carousel-image">
+        <!-- Duplicates for seamless infinite loop -->
+        <img src="../images/menu-item-1.png" alt="Crispy Chicken Bundle ₱500" class="carousel-image">
+        <img src="../images/menu-item-2.png" alt="Chicken & Fries Combo ₱320" class="carousel-image">
+        <img src="../images/menu-item-3.png" alt="Ultimate Chicken Feast ₱1000" class="carousel-image">
+        <img src="../images/menu-item-4.png" alt="Classic Fried Chicken Leg ₱25" class="carousel-image">
+        <img src="../images/menu-item-5.png" alt="Signature Chicken Bucket ₱500" class="carousel-image">
+      </div>
+    </div>
+
+    <div class="promo-message">
+      <h2>Chicken Noy</h2>
+      <h3>Experience the Crispy Perfection!</h3>
+      <p>Taste the difference of premium, freshly-fried chicken that's been perfected to golden-brown excellence. Every bite is a burst of flavor and crispiness that'll keep you coming back for more.</p>
+      <ul class="promo-features">
+        <li>✓ Fresh & Hot - Made daily with premium ingredients</li>
+        <li>✓ Crispy & Juicy - Perfect texture every single time</li>
+        <li>✓ Fast Delivery - Get your order in minutes</li>
+        <li>✓ Affordable Prices - Quality that won't break the bank</li>
+      </ul>
+      <a href="menu.html" class="btn-promo-order">EXPLORE MENU</a>
+    </div>
+  </section>
+
+  <section class="home-order-flow">
+    <div>
+      <h2>Order Chickenoy in One Smooth Flow</h2>
+      <p>Browse the menu, select your favorite crispy chicken, add it to cart or pay right away, then track the order until you receive and review it.</p>
+      <a href="menu.html" class="btn-promo-order">Start Ordering</a>
+    </div>
+    <div class="flow-showcase">
+      <img src="../images/menu-item-1.png" alt="Chickenoy party platter">
+      <img src="../images/menu-item-2.png" alt="Chickenoy chicken and fries combo">
+      <img src="../images/menu-item-4.png" alt="Chickenoy fried chicken leg">
+    </div>
+  </section>
+
+  <section class="process-strip" aria-label="Chickenoy order steps">
+    <span>Browse</span>
+    <span>Select</span>
+    <span>Add to Cart</span>
+    <span>Pay</span>
+    <span>Process</span>
+    <span>Ship</span>
+    <span>Receive</span>
+    <span>Review</span>
+  </section>
+
+  <!-- User info section -->
+  <section id="userInfo" style="display:none;">
+    <h3>Welcome!</h3>
+    <p id="userName"></p>
+    <p id="userEmail"></p>
+    <p id="userCreatedAt"></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Chickenoy. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Handle deep linking for mobile messenger links
+    function handleDeepLink() {
+      const currentPath = window.location.pathname;
+      const currentHash = window.location.hash;
+      const baseUrl = window.location.origin;
+
+      // Check for hash routing first
+      if (currentHash === '#menu') {
+        window.location.href = baseUrl + '/Frontend/Page/menu.html';
+        return;
+      } else if (currentHash === '#cart') {
+        window.location.href = baseUrl + '/Frontend/Page/cart.html';
+        return;
+      } else if (currentHash === '#dashboard') {
+        window.location.href = baseUrl + '/Frontend/Page/dashboard.html';
+        return;
+      } else if (currentHash === '#login') {
+        window.location.href = baseUrl + '/Frontend/Page/login.html';
+        return;
+      }
+
+      // Check for pathname routing
+      if (currentPath.includes('/menu')) {
+        window.location.href = baseUrl + '/Frontend/Page/menu.html';
+      } else if (currentPath.includes('/cart')) {
+        window.location.href = baseUrl + '/Frontend/Page/cart.html';
+      } else if (currentPath.includes('/dashboard')) {
+        window.location.href = baseUrl + '/Frontend/Page/dashboard.html';
+      } else if (currentPath.includes('/login')) {
+        window.location.href = baseUrl + '/Frontend/Page/login.html';
+      }
+    }
+
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      const authButtons = document.querySelector('.auth-buttons');
+      const menuToggle = document.querySelector('.menu-toggle');
+      
+      navLinks.classList.toggle('active');
+      if (authButtons) authButtons.classList.toggle('active');
+      
+      // Close menu when clicking a link
+      const links = navLinks.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+          if (authButtons) authButtons.classList.remove('active');
+        });
+      });
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const nav = document.querySelector('nav');
+      const navLinks = document.getElementById('navLinks');
+      const menuToggle = document.querySelector('.menu-toggle');
+      
+      if (!nav.contains(e.target) && navLinks.classList.contains('active')) {
+        navLinks.classList.remove('active');
+        const authButtons = document.querySelector('.auth-buttons');
+        if (authButtons) authButtons.classList.remove('active');
+      }
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const navLinks = document.getElementById('navLinks');
+        const authButtons = document.querySelector('.auth-buttons');
+        navLinks.classList.remove('active');
+        if (authButtons) authButtons.classList.remove('active');
+      }
+    });
+
+    function checkLogin() {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const loginBtn = document.querySelector('.login-btn');
+      const userInfo = document.getElementById('userInfo');
+
+      if (token && user.name) {
+        logoutBtn.style.display = 'block';
+        loginBtn.style.display = 'none';
+
+        userInfo.style.display = 'block';
+        document.getElementById('userName').textContent = `👋 Name: ${user.name}`;
+        document.getElementById('userEmail').textContent = `📧 Email: ${user.email}`;
+
+        if (user.createdAt) {
+          const createdDate = new Date(user.createdAt);
+          const formattedDate = createdDate.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+          document.getElementById('userCreatedAt').textContent = `📅 Account created: ${formattedDate}`;
+        }
+      } else {
+        logoutBtn.style.display = 'none';
+        loginBtn.style.display = 'block';
+        userInfo.style.display = 'none';
+      }
+    }
+
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.clear();
+        alert('Logged out successfully');
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      handleDeepLink();
+      checkLogin();
+      
+      // Cache buster - clear old cache
+      if ('caches' in window) {
+        caches.keys().then(cacheNames => {
+          cacheNames.forEach(cacheName => {
+            caches.delete(cacheName);
+          });
+        });
+      }
+    });
+
+    // Handle page visibility for mobile
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        checkLogin();
+      }
+    });
+  </script>
+  
+  <script src="../JS/common.js?v=2"></script>
+  <!-- PWA and Service Worker Setup -->
+  <script src="../JS/pwa-setup.js"></script>
+  <!-- Offline Error Handler -->
+  <script src="../JS/offline-handler.js?v=2"></script>
+</body>
+</html>
