@@ -13,6 +13,7 @@ const adminRoutes = require("./routes/adminRoutes")
 const contactRoutes = require("./routes/contactRoutes")
 
 const app = express()
+app.set("trust proxy", 1)
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -53,7 +54,6 @@ const mobileAndPWAHeaders = (req, res, next) => {
 
 app.use(cors())
 app.use(compression())
-app.use(limiter)
 app.use(mobileAndPWAHeaders)
 app.use(express.json())
 // Serve static files. During development prefer no-cache to ensure updated
@@ -67,6 +67,8 @@ const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/Chickenoy";
 mongoose.connect(mongoUri)
     .then(() => console.log(`MongoDB connected to ${mongoUri}`))
     .catch(err => console.log(err))
+
+app.use("/api", limiter)
 
 app.use("/api/auth", authRoutes)
 app.use("/api/menu", menuRoutes)
